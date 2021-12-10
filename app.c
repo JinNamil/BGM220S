@@ -35,7 +35,19 @@
 #include "app.h"
 #include "sl_simple_button_instances.h"
 #include "sl_simple_led_instances.h"
-
+typedef struct {
+    uint8_t flags_len;     // Length of the Flags field.
+    uint8_t flags_type;    // Type of the Flags field.
+    uint8_t flags;         // Flags field.
+    uint8_t mandata_ten;   // Length of the Manufacturer Data field.
+    uint8_t mandata_type;  // Type of the Manufacturer Data field.
+    uint8_t comp_id[2];    // Company ID field.
+    uint8_t beac_type[2];  // Beacon Type field.
+    uint8_t uuid[16];      // 128-bit Universally Unique Identifier (UUID). The UUID is an identifier for the company using the beacon.
+    uint8_t maj_num[2];    // Beacon major number. Used to group related beacons.
+    uint8_t min_num[2];    // Beacon minor number. Used to specify individual beacons within a group.
+    uint8_t tx_power;      // The Beacon's measured RSSI at 1 meter distance in dBm. See the iBeacon specification for measurement guidelines.
+  }bcn_beacon_adv_data;
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
 
@@ -87,6 +99,27 @@ SL_WEAK void app_process_action(void)
   /////////////////////////////////////////////////////////////////////////////
 }
 
+static uint8_t find_service_in_advertisement(uint8_t *data, uint8_t len)
+{
+  uint8_t ad_field_length;
+  uint8_t ad_field_type;
+  uint8_t i = 0;
+  // Parse advertisement packet
+  while (i < len) {
+    ad_field_length = data[i];
+    ad_field_type = data[i + 1];
+    // Partial ($02) or complete ($03) list of 16-bit UUIDs
+    if (ad_field_type == 0x02 || ad_field_type == 0x03) {
+      // compare UUID to Health Thermometer service UUID
+      // if (memcmp(&data[i + 2], thermo_service, 2) == 0) {
+        return 1;
+      // }
+    }
+    // advance to the next AD struct
+    i = i + ad_field_length + 1;
+  }
+  return 0;
+}
 #define SCAN_PASSIVE                  0
 /**************************************************************************//**
  * Bluetooth stack event handler.
@@ -100,7 +133,13 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
   bd_addr address;
   uint8_t address_type;
   uint8_t system_id[8];
-
+  uint8_t advData[255] = {0,};
+  uint8_t deviceName[16] = {0,};
+  bd_addr searchAddr = {0,};
+  uint16_t convertData = 0;
+//  uint8_t connectAddr[6] = {0x36, 0x0B, 0xD9, 0x5E, 0xCF, 0xD0};
+  uint8_t connectAddr[6] = {0x70, 0x2B, 0x2C, 0xB7, 0xB2, 0x0C};
+  bcn_beacon_adv_data ibeaconData = {0,};
   switch (SL_BT_MSG_ID(evt->header)) {
     // -------------------------------
     // This event indicates the device has started and the radio is ready.
@@ -125,7 +164,16 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
                                                    sizeof(system_id),
                                                    system_id);
       app_log_status_error(sc);
-
+      
+      app_log_info("Bluetooth %s address: %02X:%02X:%02X:%02X:%02X:%02X\n",
+                   address_type ? "static random" : "public device",
+                   address.addr[5],
+                   address.addr[4],
+                   address.addr[3],
+                   address.addr[2],
+                   address.addr[1],
+                   address.addr[0]);
+      #if CENTRAL_MODE
       ///////////////////////////////////////////////////////
       ///
       // Set passive scanning on 1Mb PHY
@@ -140,9 +188,18 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
       app_assert_status_f(sc, "Failed to start discovery #1\n");
       ///////////////////////////////////////////////////////
       // Create an advertising set.
+      #endif
+
+      #if PERIPHERAL_MODE
       sc = sl_bt_advertiser_create_set(&advertising_set_handle);
       app_log_status_error(sc);
-
+      uint8_t adv_data[3] = {0xAA, 0xBB, 0xCC};
+      // Set custom advertising data.
+      sc = sl_bt_advertiser_set_data(advertising_set_handle,
+                                    0,
+                                    sizeof(adv_data),
+                                    adv_data);
+      app_assert_status(sc);
       // Set advertising interval to 100ms.
       sc = sl_bt_advertiser_set_timing(
         advertising_set_handle,
@@ -152,12 +209,17 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
         0);  // max. num. adv. events
       app_log_status_error(sc);
       // Start general advertising and enable connections.
+      // sc = sl_bt_advertiser_start(
+      //   advertising_set_handle,
+      //   sl_bt_advertiser_user_data,
+      //   sl_bt_advertiser_non_connectable);
+      // app_log_status_error(sc);
       sc = sl_bt_advertiser_start(
         advertising_set_handle,
         sl_bt_advertiser_general_discoverable,
         sl_bt_advertiser_connectable_scannable);
-      app_log_status_error(sc);
-
+      app_assert_status(sc);
+      #endif
       // Button events can be received from now on.
       sl_button_enable(SL_SIMPLE_BUTTON_INSTANCE(0));
 
@@ -176,22 +238,82 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
       app_log_info("scan address: ");
       for(int i = 0; i < 6; i++)
       {
-          app_log_info("%02X ", evt->data.evt_scanner_scan_report.address.addr[i]);
+          searchAddr.addr[i] = evt->data.evt_scanner_scan_report.address.addr[i];
+          printf("%02X ", evt->data.evt_scanner_scan_report.address.addr[i]);
       }
-      app_log_info("\n");
+      printf("\n");
+      app_log_info("advertising data: ");
+      for(int i = 0; i < evt->data.evt_scanner_scan_report.data.len; i++)
+      {
+          advData[i] = evt->data.evt_scanner_scan_report.data.data[i];
+          printf("%02X ", evt->data.evt_scanner_scan_report.data.data[i]);  //[header len(n)][...][n][name len m][...][m]
+      }
+      printf("\n");
+
+      if(memcmp(searchAddr.addr, connectAddr, 6) == 0)
+      {
+          app_log_info("search my peripheral!\nscan stop\n");
+          sc = sl_bt_scanner_stop();
+          app_log_status_error(sc);
+          memcpy(&ibeaconData, evt->data.evt_scanner_scan_report.data.data, sizeof(ibeaconData));
+          app_log_info("[ibeacon data]\n");
+          printf("--------------------------------------------\n");
+          printf("flag length: %d\n", ibeaconData.flags_len);
+          printf("flag type: 0x%02X\n", ibeaconData.flags_type);
+          printf("flag: 0x%02X\n", ibeaconData.flags);
+          printf("manufacturer length: %d\n", ibeaconData.mandata_ten);
+          printf("manufacturer type: 0x%02X\n", ibeaconData.mandata_type);
+          printf("company id: 0x%02X%02X\n", ibeaconData.comp_id[1], ibeaconData.comp_id[0]);
+          printf("beacon type: 0x%02X%02X\n", ibeaconData.beac_type[1], ibeaconData.beac_type[0]);
+
+          printf("uuid: ");
+          for(int i = 0; i < 16; i++)
+          {
+            printf("%02X ", ibeaconData.uuid[i]);
+          }
+          printf("\n");
+
+          convertData = (uint16_t)((ibeaconData.maj_num[1]) | (ibeaconData.maj_num[0]<<8));
+          printf("beacon major number: %d\n", convertData);
+          convertData = (uint16_t)((ibeaconData.min_num[1]) | (ibeaconData.min_num[0]<<8));
+          printf("beacon minor number: %d\n", convertData);
+          printf("tx power: %02X\n", ibeaconData.tx_power);
+          printf("--------------------------------------------\n");
+
+          sc = sl_bt_connection_open(evt->data.evt_scanner_scan_report.address,
+                                    evt->data.evt_scanner_scan_report.address_type,
+                                    sl_bt_gap_1m_phy,
+                                    &evt->data.evt_connection_opened.connection);
+          app_log_status_error(sc);
+      }
       break;
     // -------------------------------
     // This event indicates that a new connection was opened.
     case sl_bt_evt_connection_opened_id:
       app_log_info("Connection opened.\n");
+//      if(evt->data.evt_connection_opened.master == 0)
+//      {
+//        sc = sl_bt_sm_increase_security(evt->data.evt_connection_opened.connection);
+//        app_log_status_error(sc);
+//      }
       app_log_info("central address: ");
       for(int i = 0; i < 6; i++)
       {
           app_log_info("%02X ", evt->data.evt_connection_opened.address.addr[i]);
       }
       app_log_info("Device information: %d, %d\r\n", evt->data.evt_connection_opened.master, evt->data.evt_connection_opened.address_type);
+
       break;
 
+    case sl_bt_evt_sm_bonded_id:
+      app_log("Successful bonding\r\n");
+      break;
+
+    case  sl_bt_evt_sm_bonding_failed_id:
+      app_log("Bonding failed, reason: 0x%2X\r\n", evt->data.evt_sm_bonding_failed.reason);
+      /* Previous bond is broken, delete it and close connection, host must retry at least once */
+      sl_bt_sm_delete_bondings();
+      break;
     // -------------------------------
     // This event indicates that a connection was closed.
     case sl_bt_evt_connection_closed_id:
@@ -205,6 +327,45 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
       app_assert_status(sc);
       break;
 
+    case sl_bt_evt_sync_opened_id:
+        printf("sl_bt_evt_sync_opened_id\r\n");
+        break;
+    case sl_bt_evt_sync_closed_id:
+        printf("sl_bt_evt_sync_closed_id\r\n");
+        break;
+    case sl_bt_evt_sync_data_id:
+        printf("sl_bt_evt_sync_data_id\r\n");
+        break;
+    case sl_bt_evt_sm_passkey_display_id:
+        printf("sl_bt_evt_sm_passkey_display_id\r\n");
+        break;
+    case sl_bt_evt_sm_passkey_request_id:
+        printf("sl_bt_evt_sm_passkey_request_id\r\n");
+        break;
+    case sl_bt_evt_sm_confirm_passkey_id:
+        printf("sl_bt_evt_sm_confirm_passkey_id\r\n");
+        break;
+    case sl_bt_evt_sm_list_bonding_entry_id:
+        printf("sl_bt_evt_sm_list_bonding_entry_id\r\n");
+        break;
+    case sl_bt_evt_sm_list_all_bondings_complete_id:
+        printf("sl_bt_evt_sm_list_all_bondings_complete_id\r\n");
+        printf("    Event Parameters:\r\n");
+        printf("        bonding:      0x%02x\r\n", evt->data.evt_sm_list_bonding_entry.bonding);
+        printf  ("        address:      %02x", evt->data.evt_sm_list_bonding_entry.address.addr[0]);
+        printf  (":%02x", evt->data.evt_sm_list_bonding_entry.address.addr[1]);
+        printf  (":%02x", evt->data.evt_sm_list_bonding_entry.address.addr[2]);
+        printf  (":%02x", evt->data.evt_sm_list_bonding_entry.address.addr[3]);
+        printf  (":%02x", evt->data.evt_sm_list_bonding_entry.address.addr[4]);
+        printf(":%02x\r\n", evt->data.evt_sm_list_bonding_entry.address.addr[5]);
+        printf("        address type: 0x%02x\r\n", evt->data.evt_sm_list_bonding_entry.address_type);
+        break;
+    case sl_bt_evt_sm_confirm_bonding_id:
+        printf("sl_bt_evt_sm_confirm_bonding_id\r\n");
+        printf("    Event Parameters:\r\n");
+        printf("        connection:     0x%02x\r\n", evt->data.evt_sm_confirm_bonding.connection);
+        printf("        bonding_handle: %02d",   evt->data.evt_sm_confirm_bonding.bonding_handle);
+        break;
     // -------------------------------
     // This event indicates that the value of an attribute in the local GATT
     // database was changed by a remote GATT client.
@@ -311,8 +472,8 @@ static sl_status_t update_report_button_characteristic(void)
   // Write attribute in the local GATT database.
   sc = sl_bt_gatt_server_write_attribute_value(gattdb_report_button,
                                                0,
-                                               sizeof(data_send),
-                                               &data_send);
+                                               1,
+                                               0xFF);
   if (sc == SL_STATUS_OK) {
     app_log_info("Attribute written: 0x%02x", (int)data_send);
   }
@@ -329,7 +490,7 @@ static sl_status_t update_report_button_characteristic(void)
 static sl_status_t send_report_button_notification(void)
 {
   sl_status_t sc;
-  uint8_t data_send;
+  uint8_t data_send[32] = {0xAA,};
   size_t data_len;
 
   // Read report button characteristic stored in local GATT database.

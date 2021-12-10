@@ -1,0 +1,104 @@
+{
+    "env": {
+        "SS5_toolChainPAth": "C:/SiliconLabs/SimplicityStudio/v5/developer/toolchains/gnu_arm/10.2_2020q4",
+        "SS5_toolChainPathMacOs": "/Applications/Simplicity Studio.app/Contents/Eclipse/developer/toolchains/gnu_arm/10.2_2020q4",
+        "myGccPath": "${SS5_toolChainPAth}/bin/arm-none-eabi-gcc.exe",
+        "myGccPathMacOs": "${SS5_toolChainPathMacOs}/bin/arm-none-eabi-gcc",
+        "StudioSdkPath": "C:/SiliconLabs/SimplicityStudio/v5/developer/sdks/gecko_sdk_suite/v3.2",
+        "StudioSdkPathMacOs": "/Applications/Simplicity Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v3.2",
+        "GCCtoolchainIncludePath": [
+            "${workspaceFolder}",
+            "${workspaceFolder}/include",
+            "${SS5_toolChainPAth}/arm-none-eabi/include",
+            "${SS5_toolChainPAth}/lib/gcc/arm-none-eabi/10.2.1/include",
+            "${SS5_toolChainPAth}/lib/gcc/arm-none-eabi/10.2.1/include-fixed",
+            "${SS5_toolChainPAth}/arm-none-eabi/include/c++/10.2.1",
+            "${SS5_toolChainPAth}/arm-none-eabi/include/c++/10.2.1/backward"
+        ],
+        "SS5_Project_IncludePath" : [
+            "${workspaceFolder}",
+            "${StudioSdkPath}/platform/Device/SiliconLabs/BGM22/Include",
+            "${StudioSdkPath}/app/common/util/app_assert",
+            "${StudioSdkPath}/app/common/util/app_log",
+            "${StudioSdkPath}/platform/common/inc",
+            "${StudioSdkPath}/protocol/bluetooth/inc",
+            "${StudioSdkPath}/hardware/board/inc",
+            "${StudioSdkPath}/platform/bootloader",
+            "${StudioSdkPath}/platform/bootloader/api",
+            "${StudioSdkPath}/platform/driver/button/inc",
+            "${StudioSdkPath}/platform/CMSIS/Include",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_cryptoacc_library/include",
+            "${StudioSdkPath}/platform/service/device_init/inc",
+            "${StudioSdkPath}/platform/emdrv/common/inc",
+            "${StudioSdkPath}/platform/emlib/inc",
+            "${StudioSdkPath}/platform/emdrv/gpiointerrupt/inc",
+            "${StudioSdkPath}/platform/service/hfxo_manager/inc",
+            "${StudioSdkPath}/platform/service/iostream/inc",
+            "${StudioSdkPath}/platform/driver/leddrv/inc",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_mbedtls_support/config",
+            "${StudioSdkPath}/util/third_party/crypto/mbedtls/include",
+            "${StudioSdkPath}/util/third_party/crypto/mbedtls/library",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_alt/include",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_mbedtls_support/inc",
+            "${StudioSdkPath}/platform/service/mpu/inc",
+            "${StudioSdkPath}/hardware/driver/mx25_flash_shutdown/inc/sl_mx25_flash_shutdown_usart",
+            "${StudioSdkPath}/platform/emdrv/nvm3/inc",
+            "${StudioSdkPath}/app/bluetooth/common/ota_dfu",
+            "${StudioSdkPath}/platform/service/power_manager/inc",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_psa_driver/inc",
+            "${StudioSdkPath}/platform/radio/rail_lib/common",
+            "${StudioSdkPath}/platform/radio/rail_lib/protocol/ble",
+            "${StudioSdkPath}/platform/radio/rail_lib/protocol/ieee802154",
+            "${StudioSdkPath}/platform/radio/rail_lib/protocol/zwave",
+            "${StudioSdkPath}/platform/radio/rail_lib/chip/efr32/efr32xg2x",
+            "${StudioSdkPath}/platform/radio/rail_lib/plugin/pa-conversions",
+            "${StudioSdkPath}/platform/radio/rail_lib/plugin/pa-conversions/efr32xg22",
+            "${StudioSdkPath}/platform/radio/rail_lib/plugin/rail_util_pti",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/se_manager/inc",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/se_manager/src",
+            "${StudioSdkPath}/util/silicon_labs/silabs_core/memory_manager",
+            "${StudioSdkPath}/platform/common/toolchain/inc",
+            "${StudioSdkPath}/platform/service/system/inc",
+            "${StudioSdkPath}/platform/service/sleeptimer/inc",
+            "${StudioSdkPath}/util/third_party/crypto/sl_component/sl_protocol_crypto/src",
+            "${StudioSdkPath}/platform/service/udelay/inc",
+            "${workspaceFolder}/autogen",
+            "${workspaceFolder}/config",
+            "${workspaceFolder}/"
+        ]
+    },
+    "configurations": [
+        {
+            "name": "SS5 EFR32BG22 C",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${SS5_Project_IncludePath}"
+            ],
+            "browse": {
+                "path": [],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "defines": [
+                "BGM220SC12WGA=1",
+                "SL_COMPONENT_CATALOG_PRESENT=1",
+                "MBEDTLS_CONFIG_FILE=<mbedtls_config.h>",
+                "MBEDTLS_PSA_CRYPTO_CONFIG_FILE=<psa_crypto_config.h>",
+                "SL_RAIL_LIB_MULTIPROTOCOL_SUPPORT=0",
+                "SL_RAIL_UTIL_PA_CONFIG_HEADER=<sl_rail_util_pa_config.h>",
+                "SLI_RADIOAES_REQUIRES_MASKING=1"
+            ],
+            "forcedInclude": ["${StudioSdkPath}/platform/common/toolchain/inc/sl_gcc_preinclude.h"],
+            "compilerPath": "${myGccPath}",
+            "cStandard": "c99",
+            "cppStandard": "c++03",
+            "intelliSenseMode": "gcc-arm",
+            "compilerArgs": [
+                "-g3 -gdwarf-2",
+                "-mcpu=cortex-m33",
+                "-mthumb",
+                "-std=c99"
+            ]
+        }
+    ],
+    "version": 4
+}
