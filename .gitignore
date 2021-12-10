@@ -1,0 +1,14 @@
+# .gitignore for EFM8 Simplicity Studio.
+*.obj
+*__i
+*.lst
+*.mk
+*.lnp
+*.m51
+*.omf
+*.o
+*.d
+*.axf
+*.bin
+*.hex
+*.map
