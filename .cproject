@@ -127,6 +127,8 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/driver/button/inc&quot;"/>
                                     									
+                                    <listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/driver/pwm/inc&quot;"/>
+                                    									
                                     <listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/platform/CMSIS/Include&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${StudioSdkPath}/util/third_party/crypto/sl_component/sl_cryptoacc_library/include&quot;"/>
