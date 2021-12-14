@@ -17,6 +17,8 @@
     <file name="mbedtls_config_autogen.h" builtin="true" generated="true" uri="studio:/project/autogen/mbedtls_config_autogen.h"/>
     <file name="sl_power_manager_handler.c" builtin="true" generated="true" uri="studio:/project/autogen/sl_power_manager_handler.c"/>
     <file name="psa_crypto_config_autogen.h" builtin="true" generated="true" uri="studio:/project/autogen/psa_crypto_config_autogen.h"/>
+    <file name="sl_pwm_init.c" builtin="true" generated="true" uri="studio:/project/autogen/sl_pwm_init.c"/>
+    <file name="sl_pwm_instances.h" builtin="true" generated="true" uri="studio:/project/autogen/sl_pwm_instances.h"/>
     <file name="sl_simple_button_instances.c" builtin="true" generated="true" uri="studio:/project/autogen/sl_simple_button_instances.c"/>
     <file name="sl_simple_button_instances.h" builtin="true" generated="true" uri="studio:/project/autogen/sl_simple_button_instances.h"/>
     <file name="sl_simple_led_instances.c" builtin="true" generated="true" uri="studio:/project/autogen/sl_simple_led_instances.c"/>

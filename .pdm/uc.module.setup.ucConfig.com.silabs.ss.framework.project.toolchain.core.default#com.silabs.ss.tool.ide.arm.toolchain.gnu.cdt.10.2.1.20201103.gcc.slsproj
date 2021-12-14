@@ -2,7 +2,7 @@
 <project name="uc.module.setup.ucConfig.com.silabs.ss.framework.project.toolchain.core.default#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:10.2.1.20201103.gcc" propertyScope="project">
   <folder name="config">
     <folder name="btconf">
-      <file name="gatt_configuration.btconf" generated="true" linked="false" uri="studio:/sdk/app/bluetooth/example/soc_blinky/gatt_configuration.btconf"/>
+      <file name="gatt_configuration.btconf" generated="true" linked="false" uri="studio:/sdk/app/bluetooth/common/gatt_configuration/gatt_configuration.btconf"/>
       <file name="ota_dfu.xml" generated="true" linked="false" uri="studio:/sdk/app/bluetooth/common/ota_dfu/ota_dfu.xml"/>
     </folder>
     <file name="sl_memory_config.h" generated="true" linked="false" uri="studio:/project/config/sl_memory_config.h"/>
@@ -19,6 +19,7 @@
     <file name="app_assert_config.h" generated="true" linked="false" uri="studio:/project/config/app_assert_config.h"/>
     <file name="sl_sleeptimer_config.h" generated="true" linked="false" uri="studio:/project/config/sl_sleeptimer_config.h"/>
     <file name="sl_device_init_lfxo_config.h" generated="true" linked="false" uri="studio:/project/config/sl_device_init_lfxo_config.h"/>
+    <file name="sl_pwm_init_buzzer_config.h" generated="true" linked="false" uri="studio:/project/config/sl_pwm_init_buzzer_config.h"/>
     <file name="sl_simple_led_led1_config.h" generated="true" linked="false" uri="studio:/project/config/sl_simple_led_led1_config.h"/>
     <file name="sl_rail_util_pti_config.h" generated="true" linked="false" uri="studio:/project/config/sl_rail_util_pti_config.h"/>
     <file name="nvm3_default_config.h" generated="true" linked="false" uri="studio:/project/config/nvm3_default_config.h"/>

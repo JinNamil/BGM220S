@@ -26,6 +26,8 @@ component:
 - {id: bluetooth_feature_gatt_server}
 - {id: mpu}
 - {id: gatt_configuration}
+- instance: [buzzer]
+  id: pwm
 - instance: [led1]
   id: simple_led
 - {id: bluetooth_stack}
@@ -52,7 +54,6 @@ other_file:
 - {path: readme_img3.jpg}
 - {path: readme_img4.jpg}
 - {path: readme_img5.gif}
-config_file: []
 configuration:
 - {name: SL_STACK_SIZE, value: '2752'}
 - {name: SL_HEAP_SIZE, value: '9200'}

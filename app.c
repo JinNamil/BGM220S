@@ -33,6 +33,7 @@
 #include "sl_bluetooth.h"
 #include "gatt_db.h"
 #include "app.h"
+#include "buzz2.h"
 #include "sl_simple_button_instances.h"
 #include "sl_simple_led_instances.h"
 typedef struct {
@@ -50,7 +51,8 @@ typedef struct {
   }bcn_beacon_adv_data;
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
-
+static buzz2_t buzz2;
+extern sl_pwm_instance_t sl_pwm_buzzer;
 static bool report_button_flag = false;
 
 // Updates the Report Button characteristic.
@@ -65,7 +67,7 @@ SL_WEAK void app_init(void)
 {
   // Make sure there will be no button events before the boot event.
   sl_button_disable(SL_SIMPLE_BUTTON_INSTANCE(0));
-
+  buzz2.pwm = sl_pwm_buzzer;
   /////////////////////////////////////////////////////////////////////////////
   // Put your additional application init code here!                         //
   // This is called once during start-up.                                    //
@@ -146,6 +148,7 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // Do not call any stack command before receiving this boot event!
     case sl_bt_evt_system_boot_id:
       // Extract unique ID from BT Address.
+      buzz2_play_sound(&buzz2, 27000, 100, 5);
       sc = sl_bt_system_get_identity_address(&address, &address_type);
       app_log_status_error(sc);
 
@@ -164,7 +167,7 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
                                                    sizeof(system_id),
                                                    system_id);
       app_log_status_error(sc);
-      
+      app_log_info("firmware version v0.2\n");
       app_log_info("Bluetooth %s address: %02X:%02X:%02X:%02X:%02X:%02X\n",
                    address_type ? "static random" : "public device",
                    address.addr[5],

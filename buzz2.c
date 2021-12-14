@@ -34,6 +34,7 @@
 ******************************************************************************/
 
 #include "buzz2.h"
+#include "app_log.h"
 
 /***************************************************************************//**
  * @addtogroup buzz2 BUZZ 2 Click Driver
@@ -100,6 +101,7 @@ sl_status_t buzz2_play_sound (buzz2_t *buzz2,
                               uint16_t volume,
                               uint16_t duration)
 {
+  app_log_info("%s()\n", __FUNCTION__);
   buzz2->config.frequency = freq;
   sl_pwm_init(&buzz2->pwm, &buzz2->config);
 

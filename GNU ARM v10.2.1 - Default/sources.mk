@@ -29,6 +29,7 @@ gecko_sdk_3.2.3/platform/common/src \
 gecko_sdk_3.2.3/platform/common/toolchain/src \
 gecko_sdk_3.2.3/platform/driver/button/src \
 gecko_sdk_3.2.3/platform/driver/leddrv/src \
+gecko_sdk_3.2.3/platform/driver/pwm/src \
 gecko_sdk_3.2.3/platform/emdrv/gpiointerrupt/src \
 gecko_sdk_3.2.3/platform/emdrv/nvm3/src \
 gecko_sdk_3.2.3/platform/emlib/src \

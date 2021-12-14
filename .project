@@ -241,6 +241,11 @@
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_system.h</locationURI>
 		</link>
 		<link>
+			<name>gecko_sdk_3.2.3/platform/emlib/inc/em_timer.h</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_timer.h</locationURI>
+		</link>
+		<link>
 			<name>gecko_sdk_3.2.3/platform/emlib/inc/em_usart.h</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/inc/em_usart.h</locationURI>
@@ -304,6 +309,11 @@
 			<name>gecko_sdk_3.2.3/platform/emlib/src/em_system.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/platform/emlib/src/em_system.c</locationURI>
+		</link>
+		<link>
+			<name>gecko_sdk_3.2.3/platform/emlib/src/em_timer.c</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/emlib/src/em_timer.c</locationURI>
 		</link>
 		<link>
 			<name>gecko_sdk_3.2.3/platform/emlib/src/em_usart.c</name>
@@ -449,6 +459,16 @@
 			<name>gecko_sdk_3.2.3/platform/driver/leddrv/src/sl_simple_led.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/platform/driver/leddrv/src/sl_simple_led.c</locationURI>
+		</link>
+		<link>
+			<name>gecko_sdk_3.2.3/platform/driver/pwm/inc/sl_pwm.h</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/driver/pwm/inc/sl_pwm.h</locationURI>
+		</link>
+		<link>
+			<name>gecko_sdk_3.2.3/platform/driver/pwm/src/sl_pwm.c</name>
+			<type>1</type>
+			<locationURI>STUDIO_SDK_LOC/platform/driver/pwm/src/sl_pwm.c</locationURI>
 		</link>
 		<link>
 			<name>gecko_sdk_3.2.3/platform/emdrv/common/inc/ecode.h</name>

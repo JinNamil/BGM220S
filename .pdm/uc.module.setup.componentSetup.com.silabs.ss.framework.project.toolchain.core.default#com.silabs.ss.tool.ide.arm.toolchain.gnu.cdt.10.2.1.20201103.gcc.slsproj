@@ -121,6 +121,14 @@
             <file name="sl_simple_led.h" uri="studio:/sdk/platform/driver/leddrv/inc/sl_simple_led.h"/>
           </folder>
         </folder>
+        <folder name="pwm">
+          <folder name="src">
+            <file name="sl_pwm.c" uri="studio:/sdk/platform/driver/pwm/src/sl_pwm.c"/>
+          </folder>
+          <folder name="inc">
+            <file name="sl_pwm.h" uri="studio:/sdk/platform/driver/pwm/inc/sl_pwm.h"/>
+          </folder>
+        </folder>
       </folder>
       <folder name="CMSIS">
         <folder name="Include">
@@ -280,6 +288,7 @@
           <file name="em_rtcc.c" uri="studio:/sdk/platform/emlib/src/em_rtcc.c"/>
           <file name="em_se.c" uri="studio:/sdk/platform/emlib/src/em_se.c"/>
           <file name="em_system.c" uri="studio:/sdk/platform/emlib/src/em_system.c"/>
+          <file name="em_timer.c" uri="studio:/sdk/platform/emlib/src/em_timer.c"/>
           <file name="em_usart.c" uri="studio:/sdk/platform/emlib/src/em_usart.c"/>
         </folder>
         <folder name="inc">
@@ -301,6 +310,7 @@
           <file name="em_rtcc.h" uri="studio:/sdk/platform/emlib/inc/em_rtcc.h"/>
           <file name="em_se.h" uri="studio:/sdk/platform/emlib/inc/em_se.h"/>
           <file name="em_system.h" uri="studio:/sdk/platform/emlib/inc/em_system.h"/>
+          <file name="em_timer.h" uri="studio:/sdk/platform/emlib/inc/em_timer.h"/>
           <file name="em_usart.h" uri="studio:/sdk/platform/emlib/inc/em_usart.h"/>
         </folder>
       </folder>
@@ -739,18 +749,18 @@
       </folder>
     </folder>
   </folder>
-  <file name="main.c" linked="false" uri="studio:/sdk/app/bluetooth/example/soc_blinky/main.c"/>
-  <file name="app.c" linked="false" uri="studio:/sdk/app/bluetooth/example/soc_blinky/app.c"/>
-  <file name="app_properties.c" linked="false" uri="studio:/sdk/app/bluetooth/example/soc_blinky/app_properties.c"/>
-  <file name="app.h" linked="false" uri="studio:/sdk/app/bluetooth/example/soc_blinky/app.h"/>
-  <file name="create_bl_files.bat" linked="false" uri="studio:/sdk/app/bluetooth/script/create_bl_files.bat"/>
-  <file name="create_bl_files.sh" linked="false" uri="studio:/sdk/app/bluetooth/script/create_bl_files.sh"/>
-  <file name="readme_img0.png" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img0.png"/>
-  <file name="readme_img1.jpg" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img1.jpg"/>
-  <file name="readme_img2.jpg" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img2.jpg"/>
-  <file name="readme_img3.jpg" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img3.jpg"/>
-  <file name="readme_img4.jpg" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img4.jpg"/>
-  <file name="readme_img5.gif" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme_img5.gif"/>
+  <file name="main.c" linked="false" uri="studio:/project/main.c"/>
+  <file name="app.c" linked="false" uri="studio:/project/app.c"/>
+  <file name="app_properties.c" linked="false" uri="studio:/project/app_properties.c"/>
+  <file name="app.h" linked="false" uri="studio:/project/app.h"/>
+  <file name="create_bl_files.bat" linked="false" uri="studio:/project/create_bl_files.bat"/>
+  <file name="create_bl_files.sh" linked="false" uri="studio:/project/create_bl_files.sh"/>
+  <file name="readme_img0.png" linked="false" uri="studio:/project/readme_img0.png"/>
+  <file name="readme_img1.jpg" linked="false" uri="studio:/project/readme_img1.jpg"/>
+  <file name="readme_img2.jpg" linked="false" uri="studio:/project/readme_img2.jpg"/>
+  <file name="readme_img3.jpg" linked="false" uri="studio:/project/readme_img3.jpg"/>
+  <file name="readme_img4.jpg" linked="false" uri="studio:/project/readme_img4.jpg"/>
+  <file name="readme_img5.gif" linked="false" uri="studio:/project/readme_img5.gif"/>
   <file name="readme.html" linked="false" uri="studio:/sdk/app/bluetooth/documentation/example/soc_blinky/readme.html"/>
   <includePath uri="studio:/project/"/>
   <includePath uri="studio:/sdk/platform/Device/SiliconLabs/BGM22/Include"/>
@@ -782,6 +792,7 @@
   <includePath uri="studio:/sdk/app/bluetooth/common/ota_dfu"/>
   <includePath uri="studio:/sdk/platform/service/power_manager/inc"/>
   <includePath uri="studio:/sdk/util/third_party/crypto/sl_component/sl_psa_driver/inc"/>
+  <includePath uri="studio:/sdk/platform/driver/pwm/inc"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/common"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/protocol/ble"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/protocol/ieee802154"/>
