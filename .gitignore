@@ -1,4 +1,4 @@
-# .gitignore for EFM8 Simplicity Studio.
+# ignore file
 *.obj
 *__i
 *.lst
@@ -12,3 +12,7 @@
 *.bin
 *.hex
 *.map
+
+# ignore folder
+GNU\ ARM\ v10.2.1\ -\ Default/
+output_gbl/
