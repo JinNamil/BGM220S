@@ -85,13 +85,15 @@ SL_WEAK void app_process_action(void)
 
     report_button_flag = false; // Reset flag
 
-    sc = update_report_button_characteristic();
-    app_log_status_error(sc);
+    buzz2_play_sound(&buzz2, 27000, 100, 5);
+//    sc = update_report_button_characteristic();
+//    app_log_status_error(sc);
+//
+//    if (sc == SL_STATUS_OK) {
+//      sc = send_report_button_notification();
+//      app_log_status_error(sc);
+//    }
 
-    if (sc == SL_STATUS_OK) {
-      sc = send_report_button_notification();
-      app_log_status_error(sc);
-    }
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -148,7 +150,6 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // Do not call any stack command before receiving this boot event!
     case sl_bt_evt_system_boot_id:
       // Extract unique ID from BT Address.
-      buzz2_play_sound(&buzz2, 27000, 100, 5);
       sc = sl_bt_system_get_identity_address(&address, &address_type);
       app_log_status_error(sc);
 
@@ -208,7 +209,7 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
         advertising_set_handle,
         160, // min. adv. interval (milliseconds * 1.6)
         160, // max. adv. interval (milliseconds * 1.6)
-        0,   // adv. duration
+        1500,   // adv. duration
         0);  // max. num. adv. events
       app_log_status_error(sc);
       // Start general advertising and enable connections.

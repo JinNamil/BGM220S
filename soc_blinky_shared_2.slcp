@@ -36,6 +36,7 @@ component:
 - {id: bluetooth_feature_gatt}
 - {id: BGM220SC12WGA}
 - {id: app_log}
+- {id: bluetooth_feature_dfu}
 - {id: bluetooth_feature_connection}
 - {id: brd4001a}
 - {id: bluetooth_feature_advertiser}
