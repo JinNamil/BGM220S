@@ -85,7 +85,7 @@ SL_WEAK void app_process_action(void)
 
     report_button_flag = false; // Reset flag
 
-    buzz2_play_sound(&buzz2, 27000, 100, 5);
+    buzz2_play_sound(&buzz2, 2700, 50, 5);
 //    sc = update_report_button_characteristic();
 //    app_log_status_error(sc);
 //
